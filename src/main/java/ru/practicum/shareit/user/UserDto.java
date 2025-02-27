@@ -1,21 +1,22 @@
 package ru.practicum.shareit.user;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
+@Setter
+public class UserDto {
     private Integer id;
-    @NotBlank
     private String name;
-    @NotBlank
     @Email
     private String email;
+
+    public boolean hasEmail() {
+        return email != null && !email.isEmpty();
+    }
+
+    public boolean hasName() {
+        return name != null && !name.isEmpty();
+    }
 }
