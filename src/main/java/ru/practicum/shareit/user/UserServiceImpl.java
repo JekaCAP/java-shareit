@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -13,31 +14,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserDto userDtoRequest) {
-        return userMapper.mapToUserDto(userMemoryRepository
-                .addUser(userDtoRequest));
+        User user = userMapper.mapToUser(userDtoRequest);
+        User savedUser = userMemoryRepository.addUser(user);
+        return userMapper.mapToUserDto(savedUser);
     }
 
     @Override
     public List<UserDto> getUsers() {
-        return userMemoryRepository.getUsers().stream().map(userMapper::mapToUserDto)
-                .toList();
+        return userMemoryRepository.getUsers().stream()
+                .map(userMapper::mapToUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserDto updateUser(UserDto userDtoRequest, Integer userId) {
-        return userMapper.mapToUserDto(userMemoryRepository
-                .updateUser(userDtoRequest, userId));
+        User userUpdate = userMapper.mapToUser(userDtoRequest);
+        User updatedUser = userMemoryRepository.updateUser(userUpdate, userId);
+        return userMapper.mapToUserDto(updatedUser);
     }
 
     @Override
     public UserDto getUserById(Integer userId) {
-        return userMapper.mapToUserDto(userMemoryRepository
-                .getUserById(userId));
+        User user = userMemoryRepository.getUserById(userId);
+        return userMapper.mapToUserDto(user);
     }
 
     @Override
     public UserDto deleteUser(Integer userId) {
-        return userMapper.mapToUserDto(userMemoryRepository
-                .deleteUser(userId));
+        User deletedUser = userMemoryRepository.deleteUser(userId);
+        return deletedUser != null ? userMapper.mapToUserDto(deletedUser) : null;
     }
 }

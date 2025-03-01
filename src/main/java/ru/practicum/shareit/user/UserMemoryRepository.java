@@ -8,7 +8,6 @@ import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.service.IdGenerator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,81 +16,59 @@ import java.util.Map;
 @Slf4j
 @Repository
 public class UserMemoryRepository extends IdGenerator {
-    private final UserMapper userMapper;
-    Map<Integer, User> usersMap = new HashMap<>();
+    private Map<Integer, User> usersMap = new HashMap<>();
 
-    public User addUser(UserDto userDtoRequest) {
-        if (userDtoRequest.getEmail() == null || userDtoRequest.getEmail().isEmpty()) {
+    public User addUser(User user) {
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
             log.error("При добавлении не найден email, Укажите email при добавлении.");
             throw new ValidationException("Введите email пользователя.");
         }
 
-        emailValidator(userDtoRequest.getEmail());
-
-        User user = userMapper.mapToUser(userDtoRequest);
+        emailValidator(user.getEmail());
 
         user.setId(getNextId(usersMap));
-
         usersMap.put(user.getId(), user);
         log.info("Добавлен новый пользователь с id {}", user.getId());
         return user;
     }
 
     public List<User> getUsers() {
-        List<User> userDtoList = new ArrayList<>(usersMap.values());
-        log.info("Получен список всех пользователей.");
-        return userDtoList;
+        return new ArrayList<>(usersMap.values());
     }
 
     public User getUserById(Integer userId) {
         return usersMap.get(userId);
     }
 
-    public User updateUser(UserDto userDtoRequest, Integer userId) {
+    public User updateUser(User userUpdate, Integer userId) {
         if (!usersMap.containsKey(userId)) {
             log.error("Пользователь с id {} не найден.", userId);
             throw new RuntimeException("Пользователь с id " + userId + " не существует.");
         }
 
-        String email = userDtoRequest.getEmail();
-
+        String email = userUpdate.getEmail();
         if (email != null) {
-            emailValidator(userDtoRequest.getEmail());
+            emailValidator(email);
         }
 
         User user = usersMap.get(userId);
-
-        if (userDtoRequest.hasName()) {
-            user.setName(userDtoRequest.getName());
+        if (userUpdate.getName() != null) {
+            user.setName(userUpdate.getName());
+        }
+        if (userUpdate.getEmail() != null) {
+            user.setEmail(userUpdate.getEmail());
         }
 
-        if (userDtoRequest.hasEmail()) {
-            user.setEmail(userDtoRequest.getEmail());
-        }
-
-        usersMap.put(userId, user);
         log.info("Пользователь с id {} обновлен", userId);
-
         return user;
     }
 
     public User deleteUser(Integer userId) {
-        if (usersMap.containsKey(userId)) {
-            User user = usersMap.get(userId);
-            usersMap.remove(userId);
-
-            log.info("Пользователь с id {} удален", userId);
-            return user;
-        } else {
-            log.info("Пользователь с id {} не найден", userId);
-            return null;
-        }
+        return usersMap.remove(userId);
     }
 
-    public void emailValidator(String email) {
-        Collection<User> allUsersList = usersMap.values();
-
-        allUsersList.forEach(user -> {
+    private void emailValidator(String email) {
+        usersMap.values().forEach(user -> {
             if (user.getEmail().equals(email)) {
                 log.error("Email {} уже используется другим пользователем.", email);
                 throw new DuplicatedDataException("Этот email уже занят, попробуйте использовать другой.");
