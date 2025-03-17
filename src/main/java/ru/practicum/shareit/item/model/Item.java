@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,9 @@ import ru.practicum.shareit.user.User;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Item {
+    @Id
     private Integer id;
     private User owner;
     private String name;
