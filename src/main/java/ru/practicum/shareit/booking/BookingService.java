@@ -1,13 +1,11 @@
 package ru.practicum.shareit.booking;
 
-import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoResponse;
 import ru.practicum.shareit.booking.model.State;
 
 import java.util.List;
 
-@Service
 public interface BookingService {
     BookingDtoResponse addBooking(BookingDto bookingDto, Integer userId);
 
@@ -17,5 +15,5 @@ public interface BookingService {
 
     List<BookingDtoResponse> findUsersBookings(Integer userId, State state);
 
-    List<BookingDtoResponse> findUsersItemsBookings(Integer userId,  State state);
+    List<BookingDtoResponse> findUsersItemsBookings(Integer userId, State state);
 }
