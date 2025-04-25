@@ -7,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.practicum.shareit.request.ItemRequest;
-import ru.practicum.shareit.request.ItemRequestStorage;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserStorage;
 

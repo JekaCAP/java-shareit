@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDtoRequest;
 import ru.practicum.shareit.user.dto.UserDtoResponse;
 import ru.practicum.shareit.user.service.UserService;

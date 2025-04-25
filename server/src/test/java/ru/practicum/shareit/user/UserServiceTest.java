@@ -3,8 +3,6 @@ package ru.practicum.shareit.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserStorage;
 import ru.practicum.shareit.user.dto.UserDtoRequest;
 import ru.practicum.shareit.user.dto.UserDtoResponse;
 import ru.practicum.shareit.user.service.UserService;
